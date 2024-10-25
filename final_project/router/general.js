@@ -40,14 +40,26 @@ Object.keys(books).forEach(key => {
 
 // Get all books based on title
 public_users.get('/title/:title',function (req, res) {
-  //Write your code here
-  return res.status(300).json({message: "Yet to be implemented"});
+  let title = req.params.title
+  let bookbyTitle=[]
+  Object.keys(books).forEach(key=>{
+    let book=books[key]
+    if (book.title===title){
+        bookbyTitle.push(book.title)
+    }
+  })
+  if(bookbyTitle.length>0){
+  return res.status(200).json(bookbyTitle);
+}else{
+  return res.status(404).json({ message: "No books found with that title" });
+ 
+}
 });
 
 //  Get book review
 public_users.get('/review/:isbn',function (req, res) {
-  //Write your code here
-  return res.status(300).json({message: "Yet to be implemented"});
+  let isbn=req.params.isbn
+  return res.status(200).json(books[isbn]['reviews']);
 });
 
 module.exports.general = public_users;
