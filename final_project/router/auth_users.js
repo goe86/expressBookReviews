@@ -1,6 +1,6 @@
 const express = require('express');
 const jwt = require('jsonwebtoken');
-let books = require("./booksdb.js");
+const  books = require("./booksdb.js");
 const regd_users = express.Router();
 
 let users = [];
@@ -32,8 +32,22 @@ let password = req.body.password
 
 // Add a book review
 regd_users.put("/auth/review/:isbn", (req, res) => {
-  //Write your code here
-  return res.status(300).json({message: "Yet to be implemented"});
+    let isbn=req.params.isbn
+    let review = req.query.review
+   let name = req.query.name
+
+    if (books[isbn]){
+        if(!books[isbn].reviews){
+            books[isbn].reviews=[]
+        }
+        books[isbn].reviews.push({
+          name: name,
+         review: review
+         });
+         return res.status(200).json({message: "User review updated successfully", book: books[isbn]})
+    }else{
+        return res.status(404).json({ message: "Book not found" });
+    }
 });
 
 module.exports.authenticated = regd_users;

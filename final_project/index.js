@@ -25,22 +25,8 @@ const authenticatedCust = (username, password) => {
     }
 }
 
-app.use("/customer/auth/*", function auth(req,res,next){
-  // Authenticate user
-    if (authenticatedCust(username, password)) {
-        // Generate JWT access token
-        let accessToken = jwt.sign({
-            data: password
-        }, 'access', { expiresIn: 60 * 60 });
-        // Store access token and username in session
-        req.session.authorization = {
-            accessToken, username
-        }
-        return res.status(200).send("Customer successfully logged in");
-    } else {
-        return res.status(208).json({ message: "Invalid Login. Check username and password" });
-    }
-});
+
+
  
 const PORT =5000;
 
