@@ -1,13 +1,22 @@
 const express = require('express');
 let books = require("./booksdb.js");
+const { JsonWebTokenError } = require('jsonwebtoken');
 let isValid = require("./auth_users.js").isValid;
 let users = require("./auth_users.js").users;
 const public_users = express.Router();
 
 
+
 public_users.post("/register", (req,res) => {
-  //Write your code here
-  return res.status(300).json({message: "Yet to be implemented"});
+let username= req.body.username
+let password= req.body.password
+
+if (!isValid(username)){
+    users.push({username, password})
+    return res.status(200).json({message: "User registered Successfully"})
+}else{
+    return res.status(400).json({message: "User Already Exists!"});
+    }
 });
 
 // Get the book list available in the shop
