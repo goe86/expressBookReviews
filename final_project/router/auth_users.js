@@ -34,15 +34,15 @@ let password = req.body.password
 regd_users.put("/auth/review/:isbn", (req, res) => {
     let isbn=req.params.isbn
     let review = req.query.review
-   let name = req.query.name
-
-    if (books[isbn]){
-        if(!books[isbn].reviews){
-            books[isbn].reviews=[]
+    let username=req.query.authenticatedUser
+    let book = books[isbn]
+    if (book){
+        if(!Array.isArray(book["reviews"])){
+            book["reviews"]=[]
         }
-        books[isbn].reviews.push({
-          name: name,
-         review: review
+        book["reviews"].push({
+          username: username,
+          reviews: review
          });
          return res.status(200).json({message: "User review updated successfully", book: books[isbn]})
     }else{
