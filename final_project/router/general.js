@@ -20,9 +20,13 @@ if (!isValid(username)){
 });
 
 // Get the book list available in the shop
-public_users.get('/',function (req, res) {
-  return res.status(200).json(books);
-});
+public_users.get('/', (req, res) => {
+    let allBooks= new Promise((resolve,reject)=>{
+        setTimeout(()=>{
+            resolve(res.status(200).json(books))
+        },1000)})
+        return allBooks;
+    });
 
 // Get book details based on ISBN
 public_users.get('/isbn/:isbn',function (req, res) {

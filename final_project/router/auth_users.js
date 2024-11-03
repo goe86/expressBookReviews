@@ -34,21 +34,45 @@ let password = req.body.password
 regd_users.put("/auth/review/:isbn", (req, res) => {
     let isbn=req.params.isbn
     let review = req.query.review
-    let username=req.query.authenticatedUser
+    let username=req.query.user
     let book = books[isbn]
     if (book){
         if(!Array.isArray(book["reviews"])){
             book["reviews"]=[]
         }
         book["reviews"].push({
-          username: username,
-          reviews: review
+          name: username,
+          review: review
          });
          return res.status(200).json({message: "User review updated successfully", book: books[isbn]})
     }else{
         return res.status(404).json({ message: "Book not found" });
     }
 });
+
+regd_users.delete("/auth/review/:isbn",(req,res)=>{
+    let isbn=req.params.isbn
+    let book = books[isbn]
+    let username = req.query.user
+    let bookReviews=book['reviews']
+    
+    
+    if (book){
+        if(!Array.isArray(bookReviews)){
+           bookReviews=[]
+        }
+      
+    bookReviews.forEach(bookReview => {        
+        if(username===bookReview.name){
+           delete bookReview.name
+           delete bookReview.review
+           return res.status(200).json({message: `User Review Deleted Successfully,\n ${(book)}`})
+        }else{
+            return res.json({message: "User Review Not Found"})
+        }
+    })}
+})
+
 
 module.exports.authenticated = regd_users;
 module.exports.isValid = isValid;
